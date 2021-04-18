@@ -76,9 +76,9 @@ def evaluate_model(df, path='regression_model.pkl'):
     print("Model Loaded Successfully")
     print("\n---------------------------\n")
     print("Evaluating Regression Model")
-    preds = rf_model.predict(x_test)
-    print(f"Your model r2_score is {r2_score(preds, y_test)}")
-    print(f"Your model mean abolute error is {mean_absolute_error(preds, y_test)}")
+    preds = rf_model.predict(x)
+    print(f"Your model r2_score is {r2_score(preds, y)}")
+    print(f"Your model mean abolute error is {mean_absolute_error(preds, y)}")
 
 
 
