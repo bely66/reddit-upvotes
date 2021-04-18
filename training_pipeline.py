@@ -35,20 +35,10 @@ def feature_engineering(df):
     return x, y
 
 
-def up_votes_training_pipeline(x,y, regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_layer_sizes=(128, 64, 32))):
-    numeric_features = x.select_dtypes(include=['int16', 'int32','int64', 'float64']).columns
-    y_numeric = y.select_dtypes(include=['int16', 'int32','int64', 'float64']).columns
-    numeric_features.extend(y_numeric)
-
-    numeric_transformer = Pipeline(steps=[('scaler', RobustScaler())])
-
-    preprocessor = ColumnTransformer(transformers=
-                                    [
-                                    ('numeric', numeric_transformer, numeric_features),
-                                    ])
-
+def up_votes_training_pipeline(regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_layer_sizes=(128, 64, 32))):
+    
     pipeline = Pipeline(steps = [
-               ('preprocessor', preprocessor)
+               ('scaler', RobustScaler())
               ,('regressor',regressor)
            ])
 
@@ -70,7 +60,7 @@ def train_upvotes(df, regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_l
 
     else:
         print("Building Regression Model")
-        rf_model = up_votes_training_pipeline(x, y, regressor)
+        rf_model = up_votes_training_pipeline(regressor)
         print("\n---------------------------\n")
         print("Training Regression Model")
         rf_model.fit(x, y)
@@ -79,7 +69,8 @@ def train_upvotes(df, regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_l
     joblib.dump(rf_model, 'regression_model.pkl')
     return rf_model
 
-def evaluate_model(x_test, y_test, path='regression_model.pkl'):
+def evaluate_model(df, path='regression_model.pkl'):
+    x, y = feature_engineering(df)
     print(f"Loading The Model From {path}")
     rf_model = joblib.load(path)
     print("Model Loaded Successfully")

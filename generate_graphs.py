@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
 import nltk
 from nltk import word_tokenize
 from nltk.corpus import stopwords
@@ -33,8 +35,9 @@ all_words = all_words[[word not in string.punctuation for word in all_words.inde
 all_words = all_words[[word not in string.digits for word in all_words.index]]
 all_words = all_words[[not is_float(word) for word in all_words.index]]
 all_words = all_words[["'" not in word for word in all_words.index]]
-
+plt.figure(figsize=(10,10))
 sns.barplot(x =all_words[:30].values, y=all_words[:30].index)
+
 
 def get_category(votes):
   if votes < 10:
@@ -52,3 +55,7 @@ def get_category(votes):
     return "above_average"
 
 df["votes_category"] = df.up_votes.apply(lambda x: get_category(x))
+
+plt.figure(figsize=(10,10))
+df['votes_category'].value_counts().plot(kind="bar")
+
