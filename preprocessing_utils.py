@@ -107,9 +107,10 @@ def over_18(df):
     return df
 
 def process_df(df):
-    labels_scaler = RobustScaler()
-    df["up_votes_scaled"] = labels_scaler.fit_transform(df.up_votes.values.reshape(-1,1))
+    scaler = RobustScaler()
+    df["up_votes_scaled"] = scaler.fit_transform(df.up_votes.values.reshape(-1,1))
     df_processed = df.drop(["up_votes", "up_votes_scaled", "title", "date_created", "author", "day_created"], axis=1)
+    df_processed = scaler.fit_transform(df_processed)
     labels = df.up_votes_scaled.values
 
     return df_processed, labels

@@ -36,13 +36,10 @@ def feature_engineering(df):
 
 
 def up_votes_training_pipeline(regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_layer_sizes=(128, 64, 32))):
-    
-    pipeline = Pipeline(steps = [
-               ('scaler', RobustScaler())
-              ,('regressor',regressor)
-           ])
-
-    return pipeline
+    '''
+    A pipeline should be added to encode all the preprocessing steps
+    '''
+    return regressor
 
 def train_upvotes(df, regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_layer_sizes=(128, 64, 32)), regressor_path='regression_model.pkl', fine_tune=False):
     print("Feature Engineering The DataFrame")
