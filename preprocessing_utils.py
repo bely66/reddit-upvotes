@@ -75,6 +75,25 @@ def clean_data(df):
     df.title = df.title.apply(lambda x: re.sub('[,\.!?]', '', x))
 
     return df
+def get_category(votes):
+  if votes < 10:
+    return "low"
+  elif votes > 10 and votes <120:
+    return "moderate"
+  
+  elif votes > 120 and votes <500:
+    return "high"
+
+  elif votes > 500 and votes <2000:
+    return "very_high"
+
+  elif votes > 2000:
+    return "above_average"
+
+def remove_outliers(df):
+    df = df[df["up_votes"] < 1500]
+
+    return df
 
 def word_count_score(df):
     df["word_count"] = df.title.apply(lambda x: len(x.split()))
@@ -91,7 +110,12 @@ def over_18(df):
 def process_df(df):
     labels_scaler = RobustScaler()
     df["up_votes_scaled"] = labels_scaler.fit_transform(df.up_votes.values.reshape(-1,1))
-    df_processed = df.drop(["up_votes", "up_votes_scaled", "title", "date_created", "author", "day_created", "votes_category"], axis=1)
+    df_processed = df.drop(["up_votes", "up_votes_scaled", "title", "date_created", "author", "day_created"], axis=1)
     labels = df.up_votes_scaled.values
 
     return df_processed, labels
+
+
+def graph_process(df):
+    df["votes_category"] = df.up_votes.apply(lambda x: get_category(x))
+
