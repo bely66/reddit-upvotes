@@ -12,15 +12,25 @@ from preprocessing_utils import word_count_score, char_count_score, over_18, rea
 import joblib
 
 def feature_engineering(df):
+    print("Adding Word Count Feature")
     df = word_count_score(df)
+    print("Adding Char Count Feature")
     df = char_count_score(df)
+    print("Adding Over 18 Feature")
     df = over_18(df)
+    print("Adding Readability Score Feature")
     df = readability_score(df)
+    print("Adding Sentiment Score Feature")
     df = sentiment_score(df)
+    print("Adding Toxicity Score Feature")
     df = toxicity_score(df)
+    print("Adding Subjectivity Score Feature")
     df = subjectivity_score(df)
+    print("Adding Posted Day Feature")
     df = day_from_date(df)
+    print("Adding Upper Score Ratio Feature")
     df = upper_case_score(df)
+    print("Dropping Un-necessary Tables")
     x, y = process_df(df)
     return x, y
 
