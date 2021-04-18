@@ -12,7 +12,7 @@ from sklearn.preprocessing import RobustScaler
 
 
 textstat.set_lang("en")
-
+toxicity_model = Detoxify('original')
 
 def subjective(text):
   words = ["i", "my"]
@@ -63,7 +63,6 @@ def upper_case_score(df):
     return df
 
 def toxicity_score(df):
-    toxicity_model = Detoxify('original')
     df["toxic"] = df.title.apply(lambda x: toxicity_model.predict(x).get("toxicity"))
 
     return df
