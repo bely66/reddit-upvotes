@@ -1,5 +1,4 @@
 from sklearn.pipeline import Pipeline
-from sklearn.neural_network import MLPRegressor
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler
 from sklearn.metrics import r2_score, mean_absolute_error
@@ -8,6 +7,7 @@ from preprocessing_utils import word_count_score, char_count_score, over_18, rea
                                 , sentiment_score, toxicity_score, subjectivity_score, day_from_date\
                                 , upper_case_score, process_df
 
+from MLP import MLPRegressor, TrainRegressor
 
 import joblib
 
@@ -35,41 +35,44 @@ def feature_engineering(df):
     return x, y
 
 
-def up_votes_training_pipeline(regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_layer_sizes=(128, 64, 32))):
-    '''
-    A pipeline should be added to encode all the preprocessing steps
-    '''
-    return regressor
+def up_votes_training_pipeline(input_shape, fine_tune=False):
+    regressor = MLPRegressor(input_shape)
 
-def train_upvotes(df, regressor=MLPRegressor(solver='adam', alpha=1e-5, hidden_layer_sizes=(128, 64, 32)), regressor_path='regression_model.pkl', fine_tune=False):
+    return regressor
+    # Define the loss function and optimizer
+    
+
+
+
+def train_upvotes(df, i, fine_tune=False):
     print("Feature Engineering The DataFrame")
     x, y = feature_engineering(df)
     print("\n---------------------------\n")
-
+    
     if fine_tune:
-        print(f"Loading The Model From {regressor_path}")
-        rf_model = joblib.load(regressor_path)
+        print(f"Loading The Model....")
+        train_manager = TrainRegressor()
         print("Model Loaded Successfully")
         print("\n---------------------------\n")
         print("Training The Regression Model....")
-        rf_model.fit(x, y)
+        train_manager.fit(x, y)
         print("Model Trained Successfully")
 
     else:
+        model = up_votes_training_pipeline(input_shape=x.shape[1])
+        train_manager = TrainRegressor(mlp=model)
         print("Building Regression Model")
-        rf_model = up_votes_training_pipeline(regressor)
         print("\n---------------------------\n")
         print("Training Regression Model")
-        rf_model.fit(x, y)
+        train_manager.fit(x, y)
         print("Model Trained Successfully")
 
-    joblib.dump(rf_model, 'regression_model.pkl')
-    return rf_model
+    return train_manager.model
 
 def evaluate_model(df, path='regression_model.pkl'):
     x, y = feature_engineering(df)
     print(f"Loading The Model From {path}")
-    rf_model = joblib.load(path)
+    rf_model = TrainRegressor(train=False)
     print("Model Loaded Successfully")
     print("\n---------------------------\n")
     print("Evaluating Regression Model")
