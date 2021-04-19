@@ -52,7 +52,7 @@ class TrainRegressor():
             # Iterate over the DataLoader for training data
             
             # Get inputs
-            inputs, targets = torch.from_numpy(x, dtype=torch.float32), torch.from_numpy(y, dtype=torch.float32)
+            inputs, targets = torch.from_numpy(x), torch.from_numpy(y)
             
             # Zero the gradients
             self.optimizer.zero_grad()

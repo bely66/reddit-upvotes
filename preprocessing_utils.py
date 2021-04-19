@@ -6,7 +6,9 @@ import datetime
 import calendar
 from detoxify import Detoxify
 from sklearn.preprocessing import RobustScaler
+import ssl
 
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # each model takes in either a string or a list of strings
 
