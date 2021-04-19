@@ -51,7 +51,7 @@ class TrainRegressor():
             # Iterate over the DataLoader for training data
             
             # Get inputs
-            inputs, targets = data
+            inputs, targets = x, y
             
             # Zero the gradients
             self.optimizer.zero_grad()

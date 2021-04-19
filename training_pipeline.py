@@ -55,7 +55,7 @@ def train_upvotes(df, i, fine_tune=False):
         print("Model Loaded Successfully")
         print("\n---------------------------\n")
         print("Training The Regression Model....")
-        train_manager.fit(x, y)
+        train_manager.fit(i, x, y)
         print("Model Trained Successfully")
 
     else:
@@ -64,7 +64,7 @@ def train_upvotes(df, i, fine_tune=False):
         print("Building Regression Model")
         print("\n---------------------------\n")
         print("Training Regression Model")
-        train_manager.fit(x, y)
+        train_manager.fit(i, x, y)
         print("Model Trained Successfully")
 
     return train_manager.model
