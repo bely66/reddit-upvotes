@@ -4,7 +4,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler
 from sklearn.metrics import r2_score, mean_absolute_error
 
-from preprocessing_utils import word_count_score, char_count_score, over_18, readability_score\
+from preprocessing_utils import remove_outliers, word_count_score, char_count_score, over_18, readability_score\
                                 , sentiment_score, subjectivity_score, day_from_date\
                                 , upper_case_score, process_df
 
@@ -31,6 +31,7 @@ def feature_engineering(df):
     df = day_from_date(df)
     #print("Adding Upper Score Ratio Feature")
     df = upper_case_score(df)
+    df = remove_outliers(df)
     #print("Dropping Un-necessary Tables")
     x, y = process_df(df)
     return x, y
