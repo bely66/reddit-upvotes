@@ -11,7 +11,9 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # each model takes in either a string or a list of strings
-
+week_days = ['day_Friday',
+              'day_Monday', 'day_Saturday', 'day_Sunday', 'day_Thursday',
+              'day_Tuesday', 'day_Wednesday']
 
 textstat.set_lang("en")
 toxicity_model = Detoxify('original')
@@ -56,6 +58,10 @@ def day_from_date(df):
     df["day_created"] = df.date_created.apply(lambda x: weekday_from_date(x))
 
     day_dummies = pd.get_dummies(df.day_created, prefix='day')
+    for day in week_days:
+      if day not in day_dummies:
+        day_dummies[day] = df.date_created.apply(lambda x: 0)
+    
     df = pd.concat([df, day_dummies], axis=1)
 
     return df
