@@ -1,6 +1,7 @@
 from pickle import NONE
 import torch
 from torch import nn
+from torch._C import dtype
 
 class MLPRegressor(nn.Module):
   '''
@@ -51,7 +52,7 @@ class TrainRegressor():
             # Iterate over the DataLoader for training data
             
             # Get inputs
-            inputs, targets = x, y
+            inputs, targets = torch.from_numpy(x, dtype=torch.float32), torch.from_numpy(y, dtype=torch.float32)
             
             # Zero the gradients
             self.optimizer.zero_grad()
