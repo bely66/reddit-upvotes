@@ -1,10 +1,3 @@
 # reddit-upvotes
 
-Use **training_pipeline.py** to train your dataset
-
-```
-from training_pipeline import train_upvotes
-
-train_upvotes(df)
-```
-
+You can run the notebook on [google colab](https://colab.research.google.com/drive/1RIlcuZJGbGarDFRrp57LCNhBBPEdFWbh#scrollTo=european-pressure)
